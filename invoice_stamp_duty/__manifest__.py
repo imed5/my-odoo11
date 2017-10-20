@@ -8,7 +8,7 @@
     'author': "ERPish.com",
     'website': "http://www.erpish.com",
     'category': 'Sales', 
-    'version': '11.0.1.1',   
+    'version': '11.0.1.2',   
     'depends': ['account','sale'],
     'data': [
         'views/myinvoice.xml',

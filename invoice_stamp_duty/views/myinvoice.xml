@@ -1,0 +1,70 @@
+<?xml  version="1.0"?>  
+<odoo>   
+	<record	id="stamp_duty_account_invoice"	model="ir.ui.view">	
+		<field	name="name">Adding stamp duty to an invoice</field>	
+                <field name="model">account.invoice</field>
+                <field name="type">form</field> 
+                <field name="inherit_id" ref="account.invoice_form"/>
+                <field name="arch" type="xml">
+                        <field name="amount_total" position="after" >
+
+			  <field name="pay_stamp_duty"  invisible="1" />				   
+		                   <field name="stamp_fee" readonly="True"  class="oe_subtotal_footer_separator" attrs="{'invisible': ['|',('state', '!=', 'open'), ('pay_stamp_duty','=',False)]}" /> 
+
+	  			   <button name="stamp_duty_remove_fee" type="object" colspan="2" style="text-align:right;" string="Remove Stamp Duty" class="oe_inline fa fa-trash-o oe_link"  attrs="{'invisible': ['|',('state', '!=', 'open'),('pay_stamp_duty','=',False)]}" />
+				   <button name="stamp_duty_add_fee" type="object" colspan="2" style="text-align:right;"  string="Add Stamp Duty" class="oe_inline fa fa-fa-trash-o oe_link"  attrs="{'invisible': ['|',('state', '!=', 'open'),('pay_stamp_duty','=',True)]}" />
+			  </field>
+			  <field name="payments_widget" position="after" >
+				<field name="stamp_fee" readonly="True" colspan="2" string="Paid Stamp Duty" attrs="{'invisible': ['|',('state', '!=', 'paid'), ('pay_stamp_duty','=',False)]}" /> 
+			  </field>
+
+                </field>
+            </record>
+
+
+	<record id="action_stamp_duty_account_settings" model="ir.ui.view">
+	    <field name="name">Stamp Duty Settings</field>
+	    <field name="model">stamp.duty.config</field>
+	    <field name="arch" type="xml">
+		<form string="Stamp Duty Settings" class="oe_form_configuration">
+		    <group string="Stamp Duty Settings">
+			<label for="id" string="Stamp Duty Settins"/>
+			<div>
+			    <div>
+			        <label for="default_stamp_duty_fee"/>
+			        <field name="default_stamp_duty_fee"/>
+			    </div>
+
+			    <div>
+			        <field name="stamp_fee_fixed_or_perc"/>
+			        <label for="stamp_fee_fixed_or_perc"/>
+			    </div>
+			</div>
+		    </group>
+	    <footer>
+		<button string="Apply" type="object"
+		    name="execute" class="oe_highlight"/>
+		or
+		<button string="Cancel" type="object"
+		    name="cancel" class="oe_link"/>
+	    </footer>
+		</form>
+	    </field>
+	</record>
+
+    <act_window  id="action_list_credit_limit_settings"  
+        name="Stamp Duty Settings"  
+        res_model="stamp.duty.config"
+	view_id="action_stamp_duty_account_settings"
+        view_mode="form"
+	target="inline"
+	/> 
+
+
+    <menuitem  id="stamp_duty_account_config"  
+        name="Stamp Duty Settings"  
+        action="action_list_credit_limit_settings"
+        parent="account.account_account_menu"
+        sequence="55" 
+	/>
+</odoo> 
